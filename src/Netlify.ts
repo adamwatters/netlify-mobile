@@ -84,6 +84,10 @@ export class Netlify {
     return this.fetch<INetlifySite[]>("/sites");
   }
 
+  public signOut(): void {
+    this.accessToken = null;
+  }
+
   private async fetch<T>(path: string, method: string = "GET"): Promise<T> {
     // tslint:disable-next-line
     console.log("NETLIFY CALL:", path, method);

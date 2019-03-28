@@ -1,5 +1,5 @@
-import * as React from "react";
 import { WebBrowser } from "expo";
+import * as React from "react";
 import {
   Button,
   ConnectionInfo,
@@ -12,8 +12,8 @@ import {
 import { INetlifySite, INetlifyUser, Netlify } from "./Netlify";
 
 interface IAppState {
-  connectionType: string;
-  user: INetlifyUser;
+  connectionType: string | null;
+  user: INetlifyUser | null;
   sites: INetlifySite[];
 }
 
@@ -38,8 +38,8 @@ export default class App extends React.Component<{}, IAppState> {
   public render() {
     const { connectionType, user, sites } = this.state || {
       connectionType: null,
-      user: null,
-      sites: []
+      sites: [],
+      user: null
     };
     return (
       <View style={styles.container}>
@@ -51,6 +51,14 @@ export default class App extends React.Component<{}, IAppState> {
               this.signIn();
             }}
             title="Sign In"
+          />
+        )}
+        {user && (
+          <Button
+            onPress={() => {
+              this.signOut();
+            }}
+            title="Sign Out"
           />
         )}
         {user && <Text>{user.email}</Text>}
@@ -80,6 +88,14 @@ export default class App extends React.Component<{}, IAppState> {
         this.getAndSetData();
       }
     }
+  }
+
+  public signOut() {
+    this.netlify.signOut();
+    this.setState({
+      sites: [],
+      user: null
+    });
   }
 
   public getAndSetData() {
