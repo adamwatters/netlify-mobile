@@ -4,7 +4,7 @@
 
 ## Demo
 
-open exps://expo.io/@adamwatters11/netlify-mobile in the expo app
+https://expo.io/@adamwatters11/netlify-mobile
 
 ## Features
 
