@@ -1,5 +1,5 @@
-import { WebBrowser } from "expo";
 import * as React from "react";
+import { WebBrowser } from "expo";
 import {
   Button,
   ConnectionInfo,
@@ -9,20 +9,16 @@ import {
   Text,
   View
 } from "react-native";
-import { CLIENT_ID } from "../dotenv";
-
-export const API_URL = "https://api.netlify.com/api/v1";
-export const UI_URL = "https://app.netlify.com";
+import { INetlifySite, INetlifyUser, Netlify } from "./Netlify";
 
 interface IAppState {
   connectionType: string;
-  effectiveType: string;
-  result: string | null;
-  netlify: {} | null;
+  user: INetlifyUser;
+  sites: INetlifySite[];
 }
 
 export default class App extends React.Component<{}, IAppState> {
-  private ticketID: string | null = null;
+  private netlify: Netlify = new Netlify();
 
   public componentDidMount() {
     NetInfo.getConnectionInfo().then(connectionInfo => {
@@ -36,81 +32,59 @@ export default class App extends React.Component<{}, IAppState> {
         connectionType: ci.type
       });
     });
+    this.netlify.init();
   }
 
   public render() {
-    const { connectionType, result } = this.state || {
+    const { connectionType, user, sites } = this.state || {
       connectionType: null,
-      result: null
+      user: null,
+      sites: []
     };
     return (
       <View style={styles.container}>
         <Text>Hello World!</Text>
         <Text>{`Connection Type: ${connectionType || "loading"}`}</Text>
-        <Text>{JSON.stringify(result)}</Text>
-        <Button
-          onPress={() => {
-            this.stepOne();
-          }}
-          title="Step One"
-        />
-        <Button
-          onPress={() => {
-            this.stepTwo();
-          }}
-          title="Step Two"
-        />
-        <Button
-          onPress={() => {
-            this.stepThree();
-          }}
-          title="Step Three"
-        />
+        {!user && (
+          <Button
+            onPress={() => {
+              this.signIn();
+            }}
+            title="Sign In"
+          />
+        )}
+        {user && <Text>{user.email}</Text>}
+        {sites &&
+          sites.map(site => {
+            return (
+              <Button
+                key={site.id}
+                onPress={() => {
+                  WebBrowser.openBrowserAsync(site.url);
+                }}
+                title={site.name}
+              />
+            );
+          })}
       </View>
     );
   }
 
-  private async stepOne() {
-    const response = await fetch(
-      `${API_URL}/oauth/tickets?client_id=${CLIENT_ID}`,
-      {
-        method: "POST"
+  public async signIn() {
+    const authorized = await this.netlify.isAuthorized();
+    if (authorized) {
+      this.getAndSetData();
+    } else {
+      const wasSuccessful = await this.netlify.authorizationFlow();
+      if (wasSuccessful) {
+        this.getAndSetData();
       }
-    );
-    const json = await response.json();
-    WebBrowser.openBrowserAsync(
-      `${UI_URL}/authorize?response_type=ticket&ticket=${json.id}`
-    );
-    // next step should be chained to this action
-    // say either: authorization unsuccessful, or automatically continue to step 2
-    this.ticketID = json.id;
-  }
-
-  private async stepTwo() {
-    try {
-      const response = await fetch(`${API_URL}/oauth/tickets/${this.ticketID}`);
-      const json = await response.json();
-      console.log("step two");
-      console.log(json);
-    } catch (error) {
-      console.log(error);
     }
   }
 
-  private async stepThree() {
-    try {
-      const response = await fetch(
-        `${API_URL}/oauth/tickets/${this.ticketID}/exchange`,
-        {
-          method: "POST"
-        }
-      );
-      const json = await response.json();
-      console.log("step three");
-      console.log(json);
-    } catch (error) {
-      console.log(error);
-    }
+  public getAndSetData() {
+    this.netlify.getCurrentUser().then(user => this.setState({ user }));
+    this.netlify.getSites().then(sites => this.setState({ sites }));
   }
 }
 
