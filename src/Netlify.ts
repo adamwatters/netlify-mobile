@@ -20,11 +20,7 @@ export class Netlify {
   private accessToken: string | null = null;
 
   public async init() {
-    // tslint:disable-next-line
-    console.log("init netlify");
-    getItemAsync("accessToken").then((token: string | null) => {
-      this.accessToken = token;
-    });
+    this.accessToken = await getItemAsync("accessToken");
   }
 
   public async isAuthorized(): Promise<boolean> {

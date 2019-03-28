@@ -4,6 +4,6 @@
     "slug": "netlify-mobile",
     "sdkVersion": "32.0.0",
     "version": "1.0.0",
-    "description": ""
+    "description": "React Native app for monitoring and deploying Netlify sites"
   }
 }

@@ -32,7 +32,9 @@ export default class App extends React.Component<{}, IAppState> {
         connectionType: ci.type
       });
     });
-    this.netlify.init();
+    this.netlify.init().then(() => {
+      this.signIn();
+    });
   }
 
   public render() {
@@ -58,7 +60,7 @@ export default class App extends React.Component<{}, IAppState> {
             onPress={() => {
               this.signOut();
             }}
-            title="Sign Out"
+            title="Switch User"
           />
         )}
         {user && <Text>{user.email}</Text>}
