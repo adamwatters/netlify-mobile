@@ -2,9 +2,13 @@
 
 > iOS app for monitoring and deploying Netlify sites
 
+## Demo
+
+open exps://expo.io/@adamwatters11/netlify-mobile in the expo app
+
 ## Features
 
-None yet
+- See all your deployed sites in one place
 
 ## Develop
 
