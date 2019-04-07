@@ -1,0 +1,3 @@
+rootProject.name = 'NetlifyMobile'
+
+include ':app'

@@ -1,5 +1,5 @@
-import { WebBrowser } from "expo";
-import { CLIENT_ID } from "../dotenv";
+import { CLIENT_ID } from "./dotenv";
+import { Linking } from "react-native";
 import { getItemAsync, setItemAsync } from "./storage";
 
 const API_URL = "https://api.netlify.com/api/v1";
@@ -48,19 +48,24 @@ export class Netlify {
       }
     );
     const { id } = await ticketResponse.json();
-    await WebBrowser.openBrowserAsync(
+    await Linking.openURL(
       `${UI_URL}/authorize?response_type=ticket&ticket=${id}`
     );
 
+    console.log("test console.log");
+
     // poll netlify for authorized ticket
+    await waitFor(5000);
     let count = 0;
     while (!this.checkTicket(id)) {
-      if (count > 10) {
+      if (count > 20) {
         return false;
       }
       count++;
-      await waitFor(1000);
+      await waitFor(5000);
     }
+
+    console.log("test console.log 2");
 
     const accessToken = await this.getAccessToken(id);
     if (accessToken) {

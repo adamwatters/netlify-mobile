@@ -1,15 +1,14 @@
-import { WebBrowser } from "expo";
 import * as React from "react";
 import {
   Button,
   ConnectionInfo,
-  // Linking,
+  Linking,
   NetInfo,
   StyleSheet,
   Text,
   View
 } from "react-native";
-import { INetlifySite, INetlifyUser, Netlify } from "./Netlify";
+import { INetlifySite, INetlifyUser, Netlify } from "./netlify";
 
 interface IAppState {
   connectionType: string | null;
@@ -70,7 +69,7 @@ export default class App extends React.Component<{}, IAppState> {
               <Button
                 key={site.id}
                 onPress={() => {
-                  WebBrowser.openBrowserAsync(site.url);
+                  Linking.openURL(site.url);
                 }}
                 title={site.name}
               />

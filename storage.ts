@@ -1,11 +1,11 @@
-import { SecureStore } from "expo";
+import { AsyncStorage } from "react-native";
 
 async function getItemAsync(key: string) {
-  return SecureStore.getItemAsync(key);
+  return AsyncStorage.getItem(key);
 }
 
 async function setItemAsync(key: string, value: string) {
-  return SecureStore.setItemAsync(key, value);
+  return AsyncStorage.setItem(key, value);
 }
 
 export { getItemAsync, setItemAsync };
