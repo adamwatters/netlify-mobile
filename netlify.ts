@@ -52,8 +52,7 @@ export class Netlify {
       `${UI_URL}/authorize?response_type=ticket&ticket=${id}`
     );
 
-    console.log("test console.log");
-
+    // this is terrible - there has to be a better way then polling
     // poll netlify for authorized ticket
     await waitFor(5000);
     let count = 0;
@@ -64,8 +63,6 @@ export class Netlify {
       count++;
       await waitFor(5000);
     }
-
-    console.log("test console.log 2");
 
     const accessToken = await this.getAccessToken(id);
     if (accessToken) {

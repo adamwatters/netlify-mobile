@@ -13,9 +13,9 @@ https://expo.io/@adamwatters11/netlify-mobile
 ## Develop
 
 - `git clone https://github.com/adamwatters/netlify-mobile.git`
-- [Developing with Expo](https://facebook.github.io/react-native/docs/getting-started.html)
 - [Generate new OAuth app credentials](https://app.netlify.com/account/applications)
 - `touch dotenv.js` this file is ignored and is where you'll store your OAuth credentials
+- `react-native run-ios`
 
 ```
 dotenv.js
