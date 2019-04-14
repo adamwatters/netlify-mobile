@@ -9,6 +9,7 @@ import {
   View
 } from "react-native";
 import { INetlifySite, INetlifyUser, Netlify } from "./netlify";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 interface IAppState {
   connectionType: string | null;
@@ -16,7 +17,7 @@ interface IAppState {
   sites: INetlifySite[];
 }
 
-export default class App extends React.Component<{}, IAppState> {
+class HomeScreen extends React.Component<{}, IAppState> {
   private netlify: Netlify = new Netlify();
 
   public componentDidMount() {
@@ -113,3 +114,17 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+const AppNavigator = createStackNavigator({
+  Home: {
+    screen: HomeScreen
+  }
+});
+
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends React.Component {
+  render() {
+    return <AppContainer />;
+  }
+}
