@@ -2,10 +2,6 @@
 
 > iOS app for monitoring and deploying Netlify sites
 
-## Demo
-
-https://expo.io/@adamwatters11/netlify-mobile
-
 ## Features
 
 - See all your deployed sites in one place
@@ -25,7 +21,3 @@ export const CLIENT_ID =
 export const SECRET =
   "YOUR_SECRET";
 ```
-
-## Vision
-
-Hoping to do something like [Git Hawk](https://github.com/GitHawkApp/GitHawk) for [Netlify](https://github.com/netlify)
